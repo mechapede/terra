@@ -1,0 +1,5 @@
+{
+  "name": "grass",
+  "type": "TEXTURE_2D",
+  "textures": ["Grass_002_COLOR.jpg"]
+}

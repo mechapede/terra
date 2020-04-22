@@ -1,0 +1,5 @@
+{
+  "name": "flat_rock",
+  "type": "TEXTURE_2D",
+  "textures": ["T_Flat_Rocks_BaseColor.jpg"]
+}

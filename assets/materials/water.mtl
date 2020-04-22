@@ -1,0 +1,5 @@
+{
+  "name": "water",
+  "shader": "water",
+  "textures": ["water"]
+}

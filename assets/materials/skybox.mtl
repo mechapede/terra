@@ -1,0 +1,5 @@
+{
+  "name": "skybox",
+  "shader": "skybox",
+  "textures": ["skybox"]
+}

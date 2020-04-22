@@ -1,0 +1,5 @@
+{
+  "name": "skybox",
+  "type": "TEXTURE_CUBE_MAP",
+  "textures": ["miramar_bk.jpg","miramar_ft.jpg","miramar_up.jpg","miramar_dn.jpg","miramar_lf.jpg","miramar_rt.jpg"]
+}

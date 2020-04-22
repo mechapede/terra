@@ -1,0 +1,5 @@
+{
+  "name": "sand",
+  "type": "TEXTURE_2D",
+  "textures": ["Sand_003_COLOR.jpg"]
+}

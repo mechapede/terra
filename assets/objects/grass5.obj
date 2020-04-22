@@ -1,0 +1,7 @@
+{
+  "name": "grass5",
+  "material": "grass",
+  "model": "SM_Grass_05",
+  "scripts": [],
+  "instanced": true
+}

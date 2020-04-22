@@ -1,0 +1,5 @@
+{
+  "name": "rock",
+  "shader": "default",
+  "textures": ["rocks"]
+}

@@ -1,0 +1,5 @@
+{
+  "name": "flat_rock",
+  "shader": "default",
+  "textures": ["flat_rock"]
+}

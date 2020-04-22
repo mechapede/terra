@@ -1,0 +1,5 @@
+{
+  "name": "terrain",
+  "material": "ground",
+  "scripts": ["terrain"]
+}

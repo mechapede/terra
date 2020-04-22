@@ -1,0 +1,5 @@
+{
+  "name": "start",
+  "instances": ["director","skybox","grass1"]
+}
+

@@ -1,0 +1,5 @@
+{
+  "name": "big_rock",
+  "type": "TEXTURE_2D",
+  "textures": ["T_Big_Rocks_BaseColor.jpg"]
+}

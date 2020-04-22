@@ -1,0 +1,5 @@
+{
+  "name": "dead_bush",
+  "type": "TEXTURE_2D",
+  "textures": ["T_Dead_Bush_BaseColor.png"]
+}

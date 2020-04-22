@@ -1,0 +1,5 @@
+{
+  "name": "dead_bush",
+  "shader": "default",
+  "textures": ["dead_bush"]
+}

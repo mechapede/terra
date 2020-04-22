@@ -1,0 +1,5 @@
+{
+  "name": "ground",
+  "shader": "ground",
+  "textures": ["sand","pebbles","grass","lava"]
+}

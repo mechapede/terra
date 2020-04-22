@@ -1,0 +1,7 @@
+{
+  "name": "dead_bush1",
+  "material": "dead_bush",
+  "model": "SM_DeadBush_01",
+  "scripts": [],
+  "instanced": true
+}

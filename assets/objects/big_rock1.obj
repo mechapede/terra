@@ -1,0 +1,7 @@
+{
+  "name": "big_rock1",
+  "material": "big_rock",
+  "model": "SM_Big_Rock_01",
+  "scripts": [],
+  "instanced": true
+}

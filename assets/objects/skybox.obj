@@ -1,0 +1,7 @@
+{
+  "name": "skybox",
+  "material": "skybox",
+  "model":"skybox",
+  "scripts": [],
+  "layer":1
+}

@@ -1,0 +1,5 @@
+{
+  "name": "water",
+  "type": "TEXTURE_2D",
+  "textures": ["Water_002_COLOR.jpg"]
+}

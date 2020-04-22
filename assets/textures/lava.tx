@@ -1,0 +1,5 @@
+{
+  "name": "lava",
+  "type": "TEXTURE_2D",
+  "textures": ["Lava_004_COLOR.jpg"]
+}

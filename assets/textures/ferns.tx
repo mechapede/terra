@@ -1,0 +1,5 @@
+{
+  "name": "ferns",
+  "type": "TEXTURE_2D",
+  "textures": ["T_Ferns_BaseColor.png"]
+}

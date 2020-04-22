@@ -1,2 +1,2 @@
 # terra
-Perlin Terrain Demo for RastJS
+Simple perlin noise terrain demo using rastjs

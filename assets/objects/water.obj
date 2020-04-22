@@ -1,0 +1,5 @@
+{
+  "name": "water",
+  "material": "water",
+  "scripts": ["water"]
+}

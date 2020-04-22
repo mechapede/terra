@@ -1,0 +1,7 @@
+{
+  "name": "rock4",
+  "material": "rock",
+  "model": "SM_Rock_04",
+  "scripts": [],
+  "instanced": true
+}
