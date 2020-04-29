@@ -5,6 +5,7 @@ export class PerlinNoise {
   /* Produces a Perlin grid for sampaling
      grid_size: for dividing input before mapping to grid
      factor: factor for interpolating x,y
+     TODO: can move to shared math lib?
      TODO: seed: number for random generator? Cannot speciy in js?
   */
   constructor(grid_size, factor) {
