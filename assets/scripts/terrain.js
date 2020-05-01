@@ -1,4 +1,4 @@
-import { GameObject, Material, Model, Script, Level, RenderType } from "../../engine/types.js";
+import { GameObject, Material, Model, Script, Level, RenderType, InstanceBaker } from "../../engine/types.js";
 import * as input from "../../engine/input.js";
 import { PerlinNoise } from "./PerlinNoise.js";
 import * as data from "../../engine/data.js";
@@ -9,8 +9,6 @@ export class terrain extends Script {
   constructor(parent) {
     super(parent);
     this.perlin_generator = null;
-    this.perlin_generator1 = null;
-    this.perlin_generator2 = null;
 
     this.grid_size = 64;
     this.grid_spacing = 1;
@@ -37,8 +35,16 @@ export class terrain extends Script {
     //buffers to reduce memory allocations
     this.buff1 = new Float32Array(3);
     this.buff2 = new Float32Array(3);
+    this.bakers = {}; //vegetation is static
   }
-
+  
+  sample_perlin(x,y){
+    var sample = this.perlin_generator.GetPerlinNoise(x/64 ,y/64)+
+                  0.5*this.perlin_generator.GetPerlinNoise(x/8 ,y/8)
+                  0.25*this.perlin_generator.GetPerlinNoise(x/4 ,y/4);
+    return (Math.pow(sample+1,1.5)-1) *4;
+  }
+  
   start() {
     var verts = this.verts;
     var indeces = this.indeces;
@@ -47,12 +53,8 @@ export class terrain extends Script {
     for(var z=0; z<=this.grid_size; z++) {
       for(var x=0; x<=this.grid_size; x++) {
         verts.push(x*this.grid_spacing); //x
-        var random_height = (this.perlin_generator.GetPerlinNoise(this.parent.position[0] + x*this.grid_spacing,
-                             this.parent.position[2] + z*this.grid_spacing))*8 +
-                            (this.perlin_generator1.GetPerlinNoise(this.parent.position[0] + x*this.grid_spacing,
-                                this.parent.position[2] + z*this.grid_spacing))*4 +
-                            this.perlin_generator2.GetPerlinNoise(this.parent.position[0] + x*this.grid_spacing,
-                                this.parent.position[2] + z*this.grid_spacing)*8;
+        var random_height = this.sample_perlin(this.parent.position[0] + x*this.grid_spacing,
+                                               this.parent.position[2] + z*this.grid_spacing)
         verts.push(random_height); //y
         verts.push(z*this.grid_spacing); //z
       }
@@ -72,7 +74,7 @@ export class terrain extends Script {
     var model = new Model(verts,indeces,null);
     model.calculateNormals();
     model.loadMemory();
-    this.parent.model = model;
+    this.parent.models = [model];
 
     //create the vegetation
     for(var x=1; x<this.grid_size; x += 2) {
@@ -80,6 +82,9 @@ export class terrain extends Script {
         this.place_on_slope(x+(Math.random()-0.5)*2,z+(Math.random()-0.5)*2);
       }
     }
+    for(var model in this.bakers){
+      this.bakers[model].bake();
+    } 
   }
 
   /* Places Object on slope facing upwards  */
@@ -134,8 +139,9 @@ export class terrain extends Script {
       return;
     }
 
-    var position = new Float32Array([this.parent.position[0] + xcord,this.parent.position[1] + ycord,this.parent.position[2] + zcord,0]);
-    var rotation = quaternion.getRotaionBetweenVectors([0,1,0],normal);
+    //var position = new Float32Array([this.parent.position[0] + xcord,this.parent.position[1] + ycord,this.parent.position[2] + zcord,0]);
+    var position = new Float32Array([xcord,ycord,zcord,0]);
+    var rotation = quaternion.getRotaionBetweenVectors([0,1,0],normal,new Float32Array(4));
     var model = null;
     if(ycord < 0.5) { //TODO: move measurements to shared place
       model = this.weighted_choice(this.beach_models)
@@ -146,7 +152,13 @@ export class terrain extends Script {
       if( Math.random() < 0.75 ) return;
       model = this.weighted_choice(this.hill_models);
     }
-    var id = data.addInstance(position, rotation, model);
+    if(model in this.bakers){
+      this.bakers[model].addInstance(position, rotation);
+    }else{
+      var baker = new InstanceBaker(new Float32Array(this.parent.position), new Float32Array(this.parent.rotation),model);
+      baker.addInstance(position, rotation);
+      this.bakers[model] = baker;
+    }
   }
 
   choice(choices) { //TODO: move to math lib

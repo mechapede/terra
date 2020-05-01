@@ -14,9 +14,7 @@ export class director extends Script {
     this.terrain_squares = [];
     this.water_squares = [];
     //generators shared by children
-    this.perlin_generator = new PerlinNoise(10,17);
-    this.perlin_generator1 = new PerlinNoise(10,141);
-    this.perlin_generator2 = new PerlinNoise(10,21);
+    this.perlin_generator = new PerlinNoise(16);
   }
 
   start() {

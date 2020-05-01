@@ -1,5 +1,17 @@
 import { vec2 } from "../../engine/emath.js"
 
+/*
+ * TODO: could implement hash based perlin for perf
+function shuffle(array){
+  
+}
+
+const p_table = new Uint16Array(256);
+for(var i = 0; i < 256; i++){
+  
+}
+* */
+
 /* Perlin Noise generator */
 export class PerlinNoise {
   /* Produces a Perlin grid for sampaling
@@ -8,14 +20,14 @@ export class PerlinNoise {
      TODO: can move to shared math lib?
      TODO: seed: number for random generator? Cannot speciy in js?
   */
-  constructor(grid_size, factor) {
+  constructor(grid_size) {
     this.grid_size = grid_size;
-    this.perlin_vectors = [ 0,1, 0,-1, 1,0, -1,0 ];
+    this.perlin_vectors = [ 1,1, 1,-1, -1,1, -1,-1 ];
+
     this.perlin_grid = []; //randomomly selected vectors
     for(var i =0; i < Math.pow(grid_size+1,2); i++) {
-      this.perlin_grid.push(Math.floor(Math.random() * 4));
+      this.perlin_grid.push(Math.floor(Math.random() * this.perlin_vectors.length/2));
     }
-    this.factor = factor;
 
     this.buff1 = new Float32Array(2); //shared buffers to reduce allocations
     this.buff2 = new Float32Array(2);
@@ -38,7 +50,7 @@ export class PerlinNoise {
     var num_perlin_points = this.grid_size + 1;
     //NOTE: all vectors are almost normalized... since it is unit square
     //get P in grid
-    var p = [(x / this.factor) % this.grid_size, (y / this.factor) % this.grid_size];
+    var p = [x % this.grid_size, y % this.grid_size];
 
     if(p[0] < 0) p.x += PerlinGridSize;  //square it is in is one less then number of points
     if(p[1] < 0) p.y += PerlinGridSize;

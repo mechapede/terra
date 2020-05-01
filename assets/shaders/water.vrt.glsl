@@ -20,7 +20,7 @@ void main() {
   vec4 position = a_position;
   float wlength = (2.0 * M_PI)/ 64.0;
   float grid_sum = a_position.x + a_position.y;
-  float sin_v = sin(wlength *(grid_sum + u_time*12.0));
-  position.y += sin_v * 0.2;
+  float sin_v = sin(wlength *(grid_sum + u_time*6.0));
+  position.y += sin_v * 0.1;
   gl_Position = u_matrix * position;
 }

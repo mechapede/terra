@@ -38,8 +38,8 @@ export class water extends Script {
 
     for(var z=0; z<=this.grid_size; z++) {   //calculate the uvs for the plane, uniform, prob some better way in future
       for(var x=0; x<=this.grid_size; x++) {
-        uvs.push(x/(this.grid_size+1));
-        uvs.push(z/(this.grid_size+1));
+        uvs.push(x % 2);
+        uvs.push(z % 2);
       }
     }
 
@@ -47,7 +47,7 @@ export class water extends Script {
     var model = new Model(verts,indeces,null,uvs);
     model.calculateNormals();
     model.loadMemory();
-    this.parent.model = model;
+    this.parent.models = [model];
     this.parent.render_type = RenderType.NORMAL;
   }
 
