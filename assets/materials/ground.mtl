@@ -1,5 +1,5 @@
 {
   "name": "ground",
   "shader": "ground",
-  "textures": ["sand","pebbles","grass","lava"]
+  "textures": ["terrain","terrain_normal"]
 }

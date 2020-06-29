@@ -1,0 +1,5 @@
+{
+  "name": "terrain_normal",
+  "type": "TEXTURE_2D",
+  "textures": ["terrain_normal.jpg"]
+}

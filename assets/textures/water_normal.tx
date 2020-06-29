@@ -1,0 +1,5 @@
+{
+  "name": "water_normal",
+  "type": "TEXTURE_2D",
+  "textures": ["Water_002_NORM.jpg"]
+}

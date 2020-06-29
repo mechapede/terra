@@ -1,7 +1,8 @@
 # Make file for preparing TerrainDemo
+# TODO: only copy files that are needed in manifest, rather than whole directory
 all:output
 	echo "Project Directory Generated in out/."
-#TODO: only copy files that are needed, rather than whole directory
+
 output: manifest
 	rm -r out/*; mv manifest.auto out/; \
 	             cp -r assets/models/ out/; \

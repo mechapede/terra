@@ -1,64 +1,79 @@
 precision mediump float;
+uniform mat3 u_normal_matrix;
 uniform vec3 u_light_pos;
 uniform sampler2D u_tex0;
 uniform sampler2D u_tex1;
-uniform sampler2D u_tex2;
-uniform sampler2D u_tex3;
 varying vec4 v_position;
-varying vec3 v_normal;
 varying vec3 v_model_normal;
 varying vec4 v_model_position;
  
 void main() {
-    float c_specular = 0.2; //hardcoded lighting constants
-    float c_specular_pow = 2.0;
-    float c_ambient = 0.2;
-    float c_diffuse = 0.8;
+    //hardcoded lighting constants for material
+    float c_specular;
+    float c_specular_pow;
+    float c_ambient;
+    float c_diffuse;
     vec3 u_camera_pos = vec3(0,0,0); //lighting in camera space
+  
+    //determine which enrty in texture sheet
+    float index = 0.0;
+    if ( v_model_position.y < 0.1 ) {
+        if( v_model_normal.y + v_model_position.y > 0.9 ) {
+          index = 1.0;
+          c_specular = 0.2;
+          c_specular_pow = 2.0;
+          c_ambient = 0.5;
+          c_diffuse = 0.9;
+        } else {
+          index = 0.0;
+          c_specular = 0.2;
+          c_specular_pow = 2.0;
+          c_ambient = 0.4;
+          c_diffuse = 0.9;
+        }
+    } else {
+        if( v_model_normal.y - v_model_position.y*0.25 > 0.2 ) {
+          index = 2.0;
+          c_specular = 0.2;
+          c_specular_pow = 2.0;
+          c_ambient = 0.4;
+          c_diffuse = 0.7;
+        } else {
+          index = 3.0;
+          c_specular = 0.2;
+          c_specular_pow = 1.0;
+          c_ambient = 0.4;
+          c_diffuse = 0.9;
+        } 
+    }
 
-    //use tri-planer texturing to get the uv coordinate
+    //tri-planer texturing
     vec3 blending = abs(v_model_normal).xyz; 
     blending = normalize(max(blending, 0.00001));
     float b = blending.x + blending.y + blending.z;
     blending /= vec3(b,b,b);
-    vec4 xaxis = vec4(0,0,0,0);
-    vec4 yaxis = vec4(0,0,0,0);
-    vec4 zaxis = vec4(0,0,0,0);
     float scale = 1.0;
+
     vec2 xuv = abs(mod(v_model_position.yz * scale,1.0));
+    xuv.x = (index + xuv.x)/4.0;
     vec2 yuv = abs(mod(v_model_position.xz * scale,1.0));
-    vec2 zuv = abs(mod(v_model_position.xy * scale,1.0)); //TODO: pack textures more efficiently, to reduce sampling
-    if ( v_model_position.y < 0.0 ){
-        xaxis =  texture2D(u_tex0,xuv);
-        yaxis =  texture2D(u_tex0,yuv);
-        zaxis =  texture2D(u_tex0,zuv);
-    } else if ( v_model_position.y < 0.1 ) {
-        xaxis = mix(texture2D(u_tex0,xuv),texture2D(u_tex1,xuv),v_model_position.y*10.0);
-        yaxis = mix(texture2D(u_tex0,yuv),texture2D(u_tex1,yuv),v_model_position.y*10.0);
-        zaxis = mix(texture2D(u_tex0,zuv),texture2D(u_tex1,zuv),v_model_position.y*10.0);
-    } else if ( v_model_position.y < 0.5 ){
-        xaxis =  texture2D(u_tex1,xuv);
-        yaxis =  texture2D(u_tex1,yuv);
-        zaxis =  texture2D(u_tex1,zuv);
-    } else if ( v_model_position.y < 0.6 ) {
-        xaxis = mix(texture2D(u_tex1,xuv),texture2D(u_tex2,xuv),(v_model_position.y-0.5)*10.0);
-        yaxis = mix(texture2D(u_tex1,yuv),texture2D(u_tex2,yuv),(v_model_position.y-0.5)*10.0);
-        zaxis = mix(texture2D(u_tex1,zuv),texture2D(u_tex2,zuv),(v_model_position.y-0.5)*10.0);
-    } else if ( v_model_position.y < 3.0 ) {
-        xaxis =  texture2D(u_tex2,xuv);
-        yaxis =  texture2D(u_tex2,yuv);
-        zaxis =  texture2D(u_tex2,zuv);
-    } else if ( v_model_position.y < 3.1 ) {
-        xaxis = mix(texture2D(u_tex2,xuv),texture2D(u_tex3,xuv),(v_model_position.y-3.0)*10.0);
-        yaxis = mix(texture2D(u_tex2,yuv),texture2D(u_tex3,yuv),(v_model_position.y-3.0)*10.0);
-        zaxis = mix(texture2D(u_tex2,zuv),texture2D(u_tex3,zuv),(v_model_position.y-3.0)*10.0);
-    } else  {
-        xaxis =  texture2D(u_tex3,xuv);
-        yaxis =  texture2D(u_tex3,yuv);
-        zaxis =  texture2D(u_tex3,zuv);
-    }
+    yuv.x = (index + yuv.x)/4.0;
+    vec2 zuv = abs(mod(v_model_position.xy * scale,1.0));
+    zuv.x = (index + zuv.x)/4.0;
+    vec4 xaxis_color = texture2D(u_tex0,xuv);
+    vec4 yaxis_color = texture2D(u_tex0,yuv);
+    vec4 zaxis_color = texture2D(u_tex0,zuv);
+    vec3 xaxis_normal = texture2D(u_tex1,xuv).xzy * 0.5 + 0.5; //model y,z flipped
+    vec3 yaxis_normal = texture2D(u_tex1,yuv).xzy * 0.5 + 0.5;
+    vec3 zaxis_normal = texture2D(u_tex1,zuv).xzy * 0.5 + 0.5;  
     
-    vec4 texcord = xaxis * blending.x + yaxis * blending.y + zaxis * blending.z;
+    // swizzle tangemt normals, takem from `GPU Gens 3' procedural terrain
+    vec3 normalX = vec3(0.0, xaxis_normal.y,xaxis_normal.x);
+    vec3 normalY = vec3(yaxis_normal.x, 0.0, yaxis_normal.y);
+    vec3 normalZ = vec3(zaxis_normal.x, zaxis_normal.y, 0.0);
+    vec3 worldNormal = normalX * blending.x + normalY * blending.y + normalZ * blending.z + v_model_normal;
+
+    vec4 texcord = xaxis_color * blending.x + yaxis_color * blending.y + zaxis_color * blending.z;
     
     vec3 albedo = texcord.xyz;
 
@@ -66,7 +81,9 @@ void main() {
     vec3 color = c_ambient * albedo;
 
     vec3 L = normalize(u_light_pos - v_position.xyz); //diffuse
-    vec3 N = normalize(v_normal);
+    
+    vec3 normal = u_normal_matrix * worldNormal;
+    vec3 N = normalize(normal);
     color += c_diffuse * max(dot(L,N),0.0) * light_color * albedo;
 
     vec3 Vn = normalize(u_camera_pos - v_position.xyz); //specular

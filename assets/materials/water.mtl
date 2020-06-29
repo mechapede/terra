@@ -1,5 +1,5 @@
 {
   "name": "water",
   "shader": "water",
-  "textures": ["water"]
+  "textures": ["water","water_normal"]
 }
