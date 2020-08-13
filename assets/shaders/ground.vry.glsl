@@ -21,15 +21,15 @@ void main() {
         if( v_model_normal.y + v_model_position.y > 0.9 ) {
           index = 1.0;
           c_specular = 0.2;
-          c_specular_pow = 2.0;
-          c_ambient = 0.5;
-          c_diffuse = 0.9;
+          c_specular_pow = 1.0;
+          c_ambient = 0.4;
+          c_diffuse = 0.8;
         } else {
           index = 0.0;
           c_specular = 0.2;
-          c_specular_pow = 2.0;
+          c_specular_pow = 1.0;
           c_ambient = 0.4;
-          c_diffuse = 0.9;
+          c_diffuse = 0.8;
         }
     } else {
         if( v_model_normal.y - v_model_position.y*0.25 > 0.2 ) {

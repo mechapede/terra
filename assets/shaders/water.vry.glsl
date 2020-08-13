@@ -10,7 +10,7 @@ varying vec2 v_uv;
 void main() {
     float c_specular = 0.2; //hardcoded lighting constants, TODO: as uniforms
     float c_specular_pow = 6.0;
-    float c_ambient = 0.6;
+    float c_ambient = 0.8;
     float c_diffuse = 0.8;
     
     vec3 u_camera_pos = vec3(0,0,0); //lighting in camera space
