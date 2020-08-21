@@ -188,9 +188,6 @@ export class terrain extends Script {
     } else {
       return cumulative_choices[start_index+1][0];
     }
-    
-    
-
   }
 
   generate_cumulative_weights(weighted_choices) {
@@ -206,6 +203,5 @@ export class terrain extends Script {
 
 
   step() {
-    //this.parent.rotation[0] += 0.01;
   }
 }
