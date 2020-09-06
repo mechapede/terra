@@ -23,12 +23,13 @@ export class director extends Script {
     this.fps_field = document.getElementById("fps");
     this.tris_field = document.getElementById("tris");
     this.frametime_field = document.getElementById("frame_time");
+    this.draw_calls_field = document.getElementById("draw_calls");
     this.follow_path_field = document.getElementById("follow_path");
   }
 
   start() {
     //terrain and water generation
-    this.perlin_generator = new PerlinNoise(16); //generators shared by children
+    this.perlin_generator = new PerlinNoise(256); //generators shared by children
     for(var z=0; z<2; z++) {
       for(var x=0; x<2; x++) {
         var position = new Float32Array([x*this.grid_size*this.grid_spacing, 0, z*this.grid_size*this.grid_spacing]);
@@ -100,6 +101,7 @@ export class director extends Script {
     this.fps_field.textContent = data.fps;
     this.tris_field.textContent = data.tris;
     this.frametime_field.textContent = Number.parseFloat(data.frame_time).toFixed(3);
+    this.draw_calls_field.textContent = data.draw_calls;
   }
   
   /* Same as terrain but returns 3 coordinates*/

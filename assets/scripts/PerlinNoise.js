@@ -1,17 +1,5 @@
 import { vec2 } from "../../engine/emath.js"
 
-/*
- * TODO: could implement hash based perlin for perf
-function shuffle(array){
-  
-}
-
-const p_table = new Uint16Array(256);
-for(var i = 0; i < 256; i++){
-  
-}
-* */
-
 /* Perlin Noise generator */
 export class PerlinNoise {
   /* Produces a Perlin grid for sampaling
